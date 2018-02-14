@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { StatusesService } from '../statuses.service';
+import { Observable } from 'rxjs/Observable';
+import { AngularFirestore } from 'angularfire2/firestore';
 import Status from '../status';
+import { MatSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-statuses',
@@ -9,16 +12,25 @@ import Status from '../status';
 })
 export class StatusesComponent implements OnInit {
 
-  statuses: Status[]
+  statuses: Observable<Status[]>;
 
-  constructor(private statusesService: StatusesService) { }
-
-  ngOnInit() {
-    this.getStatuses();
+  constructor(private db: AngularFirestore,
+              private router: Router,
+              public snackBar: MatSnackBar) { 
+    this.statuses = db.collection('statuses').snapshotChanges()
+        .map(actions => actions.map(a => { var status = a.payload.doc.data() as Status
+                                          status.id  = a.payload.doc.id;
+                                          return status;  } ))
+                                          .catch((e: any)=> Observable.throw(this.openSnackBar(e.message)));
   }
 
-  getStatuses() {
-    this.statusesService.getStatuses()
-    .subscribe(statuses => this.statuses = statuses);
+  ngOnInit() {
+  
+  }
+  openSnackBar(message: string, action: string = "OK") {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+      extraClasses: ['error-snack-bar']
+    });
   }
 }

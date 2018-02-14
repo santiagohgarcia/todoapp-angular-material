@@ -1,15 +1,15 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button (click)="goBack()">
+  <button mat-icon-button routerLink="/statuses">
     <mat-icon>arrow_back</mat-icon>
   </button>
-  <h1>{{ status._id===null ? 'Create Status' : 'Update Status' }}</h1>
+  <h1>{{ saveFunction == 'add' && status.id === null ? 'Create Status' : 'Update Status' }}</h1>
   <span class="spacer"></span>
-  <button *ngIf="status._id" mat-icon-button color="warn" (click)="delete()">
+  <button *ngIf="status.id" mat-icon-button color="warn" (click)="delete()">
     <mat-icon>delete</mat-icon>
   </button>
 </mat-toolbar>
 
-<mat-card class="card">
+<mat-card *ngIf="saveFunction == 'add' || ( status.id != null )" class="card">
   <mat-card-header>
     <mat-card-title>Status</mat-card-title>
   </mat-card-header>

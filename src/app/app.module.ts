@@ -4,6 +4,23 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { AngularFireModule } from 'angularfire2';
+import { environment } from '../environments/environment';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { HttpModule } from '@angular/http';
+import { HttpClient, HttpClientModule }    from '@angular/common/http';
+import {CdkTableModule} from '@angular/cdk/table';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './/app-routing.module';
+import { TodosComponent } from './todos/todos.component';
+import { TodosDetailComponent } from './todos-detail/todos-detail.component';
+import { StatusesComponent } from './statuses/statuses.component';
+import { StatusesDetailComponent } from './statuses-detail/statuses-detail.component';
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+
+
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -37,18 +54,6 @@ import {
   MatTooltipModule,
   MatStepperModule,
 } from '@angular/material';
-import { HttpModule } from '@angular/http';
-import { HttpClient, HttpClientModule }    from '@angular/common/http';
-import {CdkTableModule} from '@angular/cdk/table';
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './/app-routing.module';
-import { TodosComponent } from './todos/todos.component';
-import { TodosService } from './todos.service';
-import { TodosDetailComponent } from './todos-detail/todos-detail.component';
-import { StatusesService } from './statuses.service';
-import { StatusesComponent } from './statuses/statuses.component';
-import { StatusesDetailComponent } from './statuses-detail/statuses-detail.component';
-import { HomeComponent } from './home/home.component';
 
 @NgModule({
   exports: [
@@ -97,7 +102,8 @@ export class MaterialModule {}
     TodosDetailComponent,
     StatusesComponent,
     StatusesDetailComponent, 
-    HomeComponent
+    HomeComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -107,9 +113,11 @@ export class MaterialModule {}
     MaterialModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireAuthModule
   ],
-  providers: [TodosService,StatusesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

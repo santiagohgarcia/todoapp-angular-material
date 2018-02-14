@@ -1,13 +1,4 @@
-class Status {
-    _id:string;
+export default interface Status {
+    id: string;
     description: string;
-
-
-    constructor(
-    ){
-        this._id = null;
-        this.description = ""
-    }
 }
-
-export default Status;

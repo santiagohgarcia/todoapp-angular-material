@@ -1,18 +1,9 @@
-class ToDo {
-    _id:string;
+import { DocumentReference } from "@firebase/firestore-types";
+
+export default interface ToDo {
+    id: string;
     title: string;
     description: string;
     date: Date;
-    status: string;
-
-    constructor(
-    ){
-        this._id = null;
-        this.title = ""
-        this.description = ""
-        this.date = new Date()
-        this.status = ""
-    }
+    status: DocumentReference;
 }
-
-export default ToDo;

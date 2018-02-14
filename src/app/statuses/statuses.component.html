@@ -5,17 +5,17 @@
     </mat-card-header>
     <mat-card-content>
       <mat-nav-list class="list">
-        <div *ngFor="let status of statuses; let i = index; let l = length">
+        <div *ngFor="let status of statuses | async; let i = index;">
           <mat-divider *ngIf="i != 0"></mat-divider>
           <mat-list-item>
-            <a matLine href="/statuses/{{ status._id }}">{{ status.description }}</a>
+            <a matLine routerLink="/statuses/{{status.id}}">{{ status.description }}</a>
           </mat-list-item>
         </div>
       </mat-nav-list>
     </mat-card-content>
   </mat-card>
 
-  <a mat-fab color="primary" href="/statuses/new" class="fab" (click)="new()">
+  <a mat-fab color="primary" routerLink="/statuses/new" class="fab">
     <mat-icon>add</mat-icon>
   </a>
 

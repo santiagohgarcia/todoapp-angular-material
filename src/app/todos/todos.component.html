@@ -6,10 +6,10 @@
     </mat-card-header>
     <mat-card-content>
       <mat-nav-list class="list">
-        <div *ngFor="let todo of todos; let i = index; let l = length">
+        <div *ngFor="let todo of todos | async; let i = index">
           <mat-divider *ngIf="i != 0"></mat-divider>
           <mat-list-item>
-            <a matLine href="/todos/{{ todo._id }}">{{ todo.title }}</a>
+            <a matLine routerLink="/todos/{{todo.id}}">{{ todo.title }}</a>
             <div class="{{ todo.status === '5a7a5b4249f3c32c884a8809' ? 'checkGreen' : ''}}">
               <mat-icon mat-list-icon>check_circle</mat-icon>
             </div>
@@ -19,7 +19,7 @@
     </mat-card-content>
   </mat-card>
 
-  <a mat-fab color="primary" href="/todos/new" class="fab" (click)="new()">
+  <a mat-fab color="primary" routerLink="/todos/new" class="fab" >
     <mat-icon>add</mat-icon>
   </a>
 

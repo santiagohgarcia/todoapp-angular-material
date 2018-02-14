@@ -1,18 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material';
-import { of } from 'rxjs/observable/of';
-
-import Todo from '../todo';
-import Status from '../status';
-import { TodosService } from '../todos.service';
-import { StatusesService } from '../statuses.service';
+import  ToDo  from '../todo';
+import  Status from '../status';
 import { Observable } from 'rxjs/Observable';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
-
-
+import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { DocumentReference, QueryDocumentSnapshot } from '@firebase/firestore-types';
 
 @Component({
   selector: 'app-todos-detail',
@@ -20,8 +15,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./todos-detail.component.css']
 })
 export class TodosDetailComponent implements OnInit {
-  @Input() todo: Todo;
-  @Input() statuses: Status[];
+  todo: ToDo = {id:null, title:"",description:"",status:null} as ToDo;
+  statuses: Observable<QueryDocumentSnapshot[]>;
+  todoDoc: AngularFirestoreDocument<ToDo>;
   saveFunction;
   title = new FormControl('', [Validators.required]);
   description = new FormControl('', [Validators.required]);
@@ -34,10 +30,10 @@ export class TodosDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private todosService: TodosService,
-    private statusesService: StatusesService,
+    private router: Router,
     private location: Location,
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    private db: AngularFirestore
   ) { }
 
   ngOnInit(): void {
@@ -48,45 +44,57 @@ export class TodosDetailComponent implements OnInit {
   getTodo(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.todosService.getTodo(id)
-        .subscribe(todo => {
-        this.todo = todo;
-          this.saveFunction = 'updateTodo'
-        });
+      this.todoDoc = this.db.doc<ToDo>(`todos/${id}`);
+      this.todoDoc.ref.get().then(t => { var todo = t.data() as ToDo //TODO: cambiar esto cuando se me ocurra una mejor implementacion
+                                         todo.id  = t.id;
+                                         return todo;  }).then(t => this.todo = t)
+                                                         .catch(e => this.openSnackBar(e.message))
+      this.saveFunction = 'update'
     } else {
-      this.todo = new Todo
-      this.saveFunction = 'createTodo'
+      
+      this.saveFunction = 'add'
     }
   }
 
   goBack(): void {
-    this.location.back();
+    this.router.navigate(['/todos']);
   }
 
   getStatuses(): void {
-    this.statusesService.getStatuses()
-      .subscribe(statuses => { this.statuses = statuses })
-
+    this.statuses = this.db.collection<Status>('statuses').snapshotChanges()
+         .map(actions => actions.map(a => a.payload.doc ))
+         .catch((e: any)=> Observable.throw(this.openSnackBar(e.message)));
   }
 
   save(): void {
     if (this.todoForm.valid) {
-      this.todosService[this.saveFunction](this.todo)
-        .subscribe(res => this.goBack(),
-        err => this.openSnackBar(err.message, "OK"))
+      this[this.saveFunction]()
+      .then(res => this.goBack())
+      .catch(e=>this.openSnackBar(e.message));
     }
   }
 
-  delete() {
-    this.todosService.deleteTodo(this.todo._id)
-      .subscribe(res => this.goBack(),
-                 err => this.openSnackBar(err.message, "OK"))
+  add(): Promise<any> {
+    return this.db.collection<ToDo>('todos').add(this.todo);
   }
 
-  openSnackBar(message: string, action: string) {
+  update(): Promise<any> {
+    return this.todoDoc.update(this.todo);
+  }
+
+  delete() {
+    this.todoDoc.delete().then(res => this.goBack())
+                         .catch(e=>this.openSnackBar(e.message));
+  }
+
+  openSnackBar(message: string, action: string = "OK" ) {
     this.snackBar.open(message, action, {
       duration: 2000,
       extraClasses: ['error-snack-bar']
     });
+  }
+
+  compareById(obj1,obj2){
+    return obj1.isEqual(obj2);
   }
 }

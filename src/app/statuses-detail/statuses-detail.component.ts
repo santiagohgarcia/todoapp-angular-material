@@ -1,12 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material';
-import { of } from 'rxjs/observable/of';
-import Status from '../status';
-import { StatusesService } from '../statuses.service';
+import  Status  from '../status';
 import { Observable } from 'rxjs/Observable';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AngularFirestore, AngularFirestoreDocument  } from 'angularfire2/firestore';
 
 @Component({
   selector: 'app-statuses-detail',
@@ -15,7 +14,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class StatusesDetailComponent implements OnInit {
 
-  @Input() status: Status;
+  status: Status = {id:null,description:""} as Status;
+  statusDoc : AngularFirestoreDocument<Status>;
   saveFunction;
   description = new FormControl('', [Validators.required]);
   statusForm: FormGroup = new FormGroup({
@@ -24,47 +24,56 @@ export class StatusesDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private statusesService: StatusesService,
+    private router: Router,
     private location: Location,
-    public snackBar: MatSnackBar) { }
+    public snackBar: MatSnackBar,
+    private db: AngularFirestore) { }
 
   ngOnInit(): void {
     this.getStatus();
-  }
+  } 
 
   getStatus(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.statusesService.getStatus(id)
-        .subscribe(status => {
-        this.status = status;
-          this.saveFunction = 'updateStatus'
-        });
+        this.statusDoc = this.db.doc<Status>(`statuses/${id}`);
+        this.statusDoc.ref.get().then(s => { var status = s.data() as Status //TODO: cambiar esto cuando se me ocurra una mejor implementacion
+                                             status.id  = s.id;
+                                             this.status = status;  } )
+                                .catch(e => this.openSnackBar(e.message));
+        this.saveFunction = 'update'
     } else {
-      this.status = new Status
-      this.saveFunction = 'createStatus'
+
+      this.saveFunction = 'add'
     }
   }
 
   goBack(): void {
-    this.location.back();
+    this.router.navigate(['/statuses']);
   }
 
   save(): void {
     if (this.statusForm.valid) {
-      this.statusesService[this.saveFunction](this.status)
-        .subscribe(res => this.goBack(),
-        err => this.openSnackBar("Error when processing update", "OK"))
+      this[this.saveFunction]()
+        .then( res => this.goBack())
+        .catch(e=>this.openSnackBar(e.message));        
     }
+  }
+
+  add(): Promise<any> {
+    return this.db.collection<Status>('statuses').add(this.status);
+  }
+
+  update(): Promise<any> {
+    return this.statusDoc.update(this.status);
   }
   
   delete() {
-    this.statusesService.deleteStatus(this.status._id)
-      .subscribe(res => this.goBack(),
-      err => this.openSnackBar("Error deleting item", "OK"))
+    this.statusDoc.delete().then( res => this.goBack())
+                           .catch(e=>this.openSnackBar(e.message));     
   }
 
-  openSnackBar(message: string, action: string) {
+  openSnackBar(message: string, action: string = "OK") {
     this.snackBar.open(message, action, {
       duration: 2000,
       extraClasses: ['error-snack-bar']
