@@ -1,23 +1,42 @@
 
+.back {
+    height: 100%;
+    width: 100%;
+}
+.button-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
 
-.card {
-    margin:auto;
-    margin-top: 10%;
-    max-width: 400px;
-    min-height: 300px;
+  .divider {
+      color: black;
+  }
+
+.facebook-button{
+    background-color: #4267b2;
+    color: white;
+    margin-right: 5px;
 }
 
-.example-container {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .example-container > * {
-    width: 100%;
-  }
+.google-button{
+    background-color: #db4437; 
+    color: white;
+    margin-left: 5px;
+}
+
+.card {
+    margin: auto;
+    padding: 15% 0;
+    max-width: 300px;
+}
+
   
  .buttons { 
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    color:white;
+    width: 100%;
+}
+
+.full-width {
+  width: 100%;
 }

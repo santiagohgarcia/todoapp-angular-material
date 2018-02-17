@@ -19,7 +19,7 @@ import { StatusesDetailComponent } from './statuses-detail/statuses-detail.compo
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-
+import { RegisterComponent } from './login/components/register.component';
 
 import {
   MatAutocompleteModule,
@@ -103,7 +103,8 @@ export class MaterialModule {}
     StatusesComponent,
     StatusesDetailComponent, 
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -118,6 +119,7 @@ export class MaterialModule {}
     AngularFirestoreModule,
     AngularFireAuthModule
   ],
+  entryComponents: [RegisterComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

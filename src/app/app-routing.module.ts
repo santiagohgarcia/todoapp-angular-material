@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent},
-  { path: 'home', component: HomeComponent },
+  { path: 'home', redirectTo: 'todos' },
   { path: 'todos', component: HomeComponent, 
                    children: [ { path: '',component: TodosComponent, pathMatch: 'full' }] },
   { path: 'todos/new', component: TodosDetailComponent, pathMatch: 'full'},
