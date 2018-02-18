@@ -1,19 +1,24 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button (click)="goBack()">
+  <button mat-icon-button routerLink="/todos">
     <mat-icon>arrow_back</mat-icon>
   </button>
-  <h1>{{ todo._id===null ? 'Create Todo' : 'Update Todo' }}</h1>
+  <h1>{{ saveFunction == 'add' && todo.id === null ? 'Create Todo' : 'Update Todo' }}</h1>
   <span class="spacer"></span>
-  <button *ngIf="todo._id" mat-icon-button color="warn" (click)="delete()">
+  <button *ngIf="todo.id" mat-icon-button color="warn" (click)="delete()">
     <mat-icon>delete</mat-icon>
   </button>
 </mat-toolbar>
+
+<div *ngIf="loading">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+
 <mat-card class="card">
   <mat-card-header>
     <mat-card-title>Todo</mat-card-title>
   </mat-card-header>
   <div class="example-container">
-<form [formGroup]="todoForm" class="form">
+    <form [formGroup]="todoForm" class="form" *ngIf="saveFunction == 'add' || ( todo.id != null )">
       <mat-form-field class="full-width">
         <input matInput placeholder="Title" [formControl]="title" [(ngModel)]="todo.title" [(value)]="todo.title" required>
         <mat-error *ngIf="title.invalid">Required field</mat-error>
@@ -25,20 +30,20 @@
       </mat-form-field>
 
       <mat-form-field class="full-width">
-        <mat-select placeholder="Status" [formControl]="status" [(ngModel)]="todo.status" [(value)]="todo.status" required>
+        <mat-select placeholder="Status" [formControl]="status" [(ngModel)]="todo.status" [compareWith]="compareById" required>
           <mat-option>--</mat-option>
-          <mat-option *ngFor="let status of statuses" [value]="status._id">
-            {{ status.description }}
+          <mat-option *ngFor="let status of statuses | async" [value]="status.ref">
+            {{ status.data().description }}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="status.invalid">Required field</mat-error>
       </mat-form-field>
-    
-    <div class="button-row">
-      <button mat-fab color="primary" class="fab" (click)="save()">
-        <mat-icon>done</mat-icon>
-      </button>
-    </div>
-  </form>
+
+      <div class="button-row">
+        <button mat-fab color="primary" class="fab" (click)="save()">
+          <mat-icon>done</mat-icon>
+        </button>
+      </div>
+    </form>
   </div>
 </mat-card>

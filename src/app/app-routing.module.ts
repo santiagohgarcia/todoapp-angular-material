@@ -5,10 +5,13 @@ import { TodosDetailComponent } from './todos-detail/todos-detail.component'
 import { StatusesComponent } from './statuses/statuses.component';
 import { StatusesDetailComponent } from './statuses-detail/statuses-detail.component';
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent},
+  { path: 'home', redirectTo: 'todos' },
   { path: 'todos', component: HomeComponent, 
                    children: [ { path: '',component: TodosComponent, pathMatch: 'full' }] },
   { path: 'todos/new', component: TodosDetailComponent, pathMatch: 'full'},

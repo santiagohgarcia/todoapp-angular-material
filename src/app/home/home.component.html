@@ -3,7 +3,7 @@
       <button mat-icon-button (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-      <h1>Responsive App</h1>
+      <h1>Todo App</h1>
     </mat-toolbar>
   
     <mat-sidenav-container class="sidenav-container" (backdropClick)="close()">
@@ -16,13 +16,16 @@
         <mat-nav-list>
           <h3 mat-subheader>Entities</h3>
           <mat-list-item>
-            <a matLine href="/todos">Todos</a>
+            <button mat-button mat-line class="button" routerLink="/todos">Todos</button>
           </mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item>
-            <a matLine href="/statuses">Statuses</a>
+            <button mat-button mat-line class="button" routerLink="/statuses">Statuses</button>
           </mat-list-item>
           <mat-divider></mat-divider>
+          <mat-list-item>
+            <button mat-button mat-line class="button" color="warn" (click)="logout()">LogOut</button>
+          </mat-list-item>
         </mat-nav-list>
       </mat-sidenav>
     </mat-sidenav-container>

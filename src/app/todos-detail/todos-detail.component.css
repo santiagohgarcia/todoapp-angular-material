@@ -27,7 +27,8 @@
 }
 
 .error-snack-bar {
-  background: darkred;
+  background: red;
+  color: red;
 }
 
 .card {
@@ -39,10 +40,11 @@
   height: auto;
 }
 
-.form {
-  min-width: 150px;
-  width: 100%;
+.example-container {
+  display: flex;
+  flex-direction: column;
 }
-.full-width {
+
+.full-width{
   width: 100%;
 }
