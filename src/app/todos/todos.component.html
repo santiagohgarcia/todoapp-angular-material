@@ -1,9 +1,10 @@
-<div class="card">
+<div *ngIf="!(todos | async)">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
 
+<div class="card">
   <mat-card>
-    <mat-card-header>
-      <mat-card-title>Todos</mat-card-title>
-    </mat-card-header>
+    <h4 class="subheading-1">Todos</h4>
     <mat-card-content>
       <mat-nav-list class="list">
         <div *ngFor="let todo of todos | async; let i = index">

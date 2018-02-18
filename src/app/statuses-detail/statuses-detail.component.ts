@@ -14,6 +14,7 @@ import { AngularFirestore, AngularFirestoreDocument  } from 'angularfire2/firest
 })
 export class StatusesDetailComponent implements OnInit {
 
+  loading: boolean = true;
   status: Status = {id:null,description:""} as Status;
   statusDoc : AngularFirestoreDocument<Status>;
   saveFunction;
@@ -39,11 +40,12 @@ export class StatusesDetailComponent implements OnInit {
         this.statusDoc = this.db.doc<Status>(`statuses/${id}`);
         this.statusDoc.ref.get().then(s => { var status = s.data() as Status //TODO: cambiar esto cuando se me ocurra una mejor implementacion
                                              status.id  = s.id;
-                                             this.status = status;  } )
+                                             this.status = status;
+                                             this.loading = false; } )
                                 .catch(e => this.openSnackBar(e.message));
         this.saveFunction = 'update'
     } else {
-
+      this.loading = false;
       this.saveFunction = 'add'
     }
   }

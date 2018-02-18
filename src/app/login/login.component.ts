@@ -35,7 +35,6 @@ export class LoginComponent implements OnInit {
     public snackBar: MatSnackBar) {
     this.afAuth.authState.subscribe(user => {
       if (user) {
-        // User is not logged in
         this.router.navigateByUrl("/home");
       }
     });
@@ -48,14 +47,14 @@ export class LoginComponent implements OnInit {
 
   withGoogle() {
     this.afAuth.auth.setPersistence(this.persistance)
-      .then(_ => this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then(_ => this.afAuth.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider())
         .catch(e => this.openSnackBar(e.message)))
       .catch(e => this.openSnackBar(e.message));
   }
 
   withFacebook() {
     this.afAuth.auth.setPersistence(this.persistance)
-      .then(_ => this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider())
+      .then(_ => this.afAuth.auth.signInWithRedirect(new firebase.auth.FacebookAuthProvider())
         .catch(e => this.openSnackBar(e.message)))
       .catch(e => this.openSnackBar(e.message));
   }

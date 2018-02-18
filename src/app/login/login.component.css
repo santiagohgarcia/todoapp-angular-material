@@ -40,3 +40,8 @@
 .full-width {
   width: 100%;
 }
+
+.error-snack-bar {
+    background: red;
+    color: red;
+  }

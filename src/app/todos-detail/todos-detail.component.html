@@ -8,6 +8,11 @@
     <mat-icon>delete</mat-icon>
   </button>
 </mat-toolbar>
+
+<div *ngIf="loading">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+
 <mat-card class="card">
   <mat-card-header>
     <mat-card-title>Todo</mat-card-title>

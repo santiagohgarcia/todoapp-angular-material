@@ -1,8 +1,9 @@
+<div *ngIf="!(statuses | async)">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
 <div class="card">
   <mat-card>
-    <mat-card-header>
-      <mat-card-title>Statuses</mat-card-title>
-    </mat-card-header>
+    <h4 class="subheading-1">Statuses</h4> 
     <mat-card-content>
       <mat-nav-list class="list">
         <div *ngFor="let status of statuses | async; let i = index;">

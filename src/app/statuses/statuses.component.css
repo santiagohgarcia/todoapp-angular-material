@@ -36,3 +36,11 @@
     color: green;
   }
   
+  .error-snack-bar {
+    background: red;
+    color: red;
+  }
+
+  .demo-progress-bar-container {
+    width: 100%;
+  }
