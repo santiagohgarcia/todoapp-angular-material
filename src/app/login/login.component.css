@@ -1,7 +1,8 @@
 
 .back {
-    height: 100%;
-    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 .button-row {
     display: flex;
@@ -28,7 +29,7 @@
 .card {
     margin: auto;
     padding: 15% 0;
-    max-width: 300px;
+    max-width: 325px;
 }
 
   
@@ -44,4 +45,8 @@
 .error-snack-bar {
     background: red;
     color: red;
+  }
+
+  .signUpRow{
+    margin-top: 20px;
   }

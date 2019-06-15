@@ -3,7 +3,7 @@
       <button mat-icon-button (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-      <h1>Todo App</h1>
+      <h1>UTN Simulador</h1>
     </mat-toolbar>
   
     <mat-sidenav-container class="sidenav-container" (backdropClick)="close()">
@@ -16,15 +16,15 @@
         <mat-nav-list>
           <h3 mat-subheader>Entities</h3>
           <mat-list-item>
-            <button mat-button mat-line class="button" routerLink="/todos">Todos</button>
+            <button mat-button mat-line class="button" routerLink="/simulations">Simulaciones</button>
           </mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item>
-            <button mat-button mat-line class="button" routerLink="/statuses">Statuses</button>
+            <button mat-button mat-line class="button" routerLink="/awards">Premios</button>
           </mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item>
-            <button mat-button mat-line class="button" color="warn" (click)="logout()">LogOut</button>
+            <button mat-button mat-line class="button" color="warn" (click)="logout()">Log out</button>
           </mat-list-item>
         </mat-nav-list>
       </mat-sidenav>

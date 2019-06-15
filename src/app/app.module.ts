@@ -12,10 +12,8 @@ import { HttpClient, HttpClientModule }    from '@angular/common/http';
 import {CdkTableModule} from '@angular/cdk/table';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
-import { TodosComponent } from './todos/todos.component';
-import { TodosDetailComponent } from './todos-detail/todos-detail.component';
-import { StatusesComponent } from './statuses/statuses.component';
-import { StatusesDetailComponent } from './statuses-detail/statuses-detail.component';
+import { SimulationsComponent } from './simulations/simulations.component';
+import { AwardsComponent } from './awards/awards.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { AngularFireAuthModule } from 'angularfire2/auth';
@@ -98,10 +96,8 @@ export class MaterialModule {}
 @NgModule({
   declarations: [
     AppComponent,
-    TodosComponent,
-    TodosDetailComponent,
-    StatusesComponent,
-    StatusesDetailComponent, 
+    SimulationsComponent,
+    AwardsComponent,
     HomeComponent,
     LoginComponent,
     RegisterComponent
